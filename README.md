@@ -3,5 +3,5 @@ Welcome to PortfolioHub, your one-stop solution for creating, customizing, and s
 <div style="display: flex; justify-content: center; align-items: center;">
     <img src="https://www.imghost.net/ib/T3TmxVYlNwB7yrh_1718499904.png" height="450" width="340" style="margin-right: 10px;">
     <img src="https://www.imghost.net/ib/BQXGDzTg03LGo0q_1718526588.png" height="470" width="310">
-    <img src="https://www.imghost.net/ib/k6ciyIlBpcBfQ6y_1718527438.png" height="470" width="310">
+    <img src="https://www.imghost.net/ib/jP16eCt0Dr9VHG0_1718542569.png" height="470" width="310">
 </div>
