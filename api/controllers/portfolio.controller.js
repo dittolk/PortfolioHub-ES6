@@ -2,13 +2,13 @@ import { Op } from 'sequelize';
 import db from '../models/index.js';
 import moment from 'moment';
 import 'dotenv/config';
+import redisClient from '../config/redis.config.js';
 
 const { User, Portfolio, Project } = db;
 
 export const createPortfolio = async (req, res) => {
     try {
         const { title, description, user_id } = req.body;
-        console.log(req.body);
 
         const findPortfolio = await Portfolio.findOne({
             where: {
@@ -45,6 +45,13 @@ export const getUserPortfolio = async (req, res) => {
         const limit = 6;
         const offset = (page - 1) * limit;
 
+        const cacheKey = `userPortfolio:${user_id}:${page}:${sortBy}:${sortOrder}:${search}`;
+        const cachedPortfolio = await redisClient.get(cacheKey);
+
+        if (cachedPortfolio) {
+            return res.status(200).json(JSON.parse(cachedPortfolio));
+        }
+
         const dataPortfolio = await Portfolio.findAndCountAll({
             include: [
               {
@@ -58,21 +65,15 @@ export const getUserPortfolio = async (req, res) => {
                 },
                 isDeleted: false
             },
-            // attributes: {
-            //     exclude: ['password'],
-            // },
-            // order: [
-            //   sortBy === 'branch.name' ?
-            //   [Branch, 'name', sortOrder.toUpperCase()]
-            //   :
-            //   [[sortBy, sortOrder.toUpperCase()]]
-            // ],
             limit: parseInt(limit),
             offset: parseInt(offset),
         });
 
         const totalPages = Math.ceil(dataPortfolio.count / limit);
-        return res.status(200).send({ result: dataPortfolio, page, totalPages });
+        const result = { result: dataPortfolio, page, totalPages };
+        await redisClient.setEx(cacheKey, 100, JSON.stringify(result));
+
+        return res.status(200).send(result);
     } catch (error) {
         console.error(error)
         return res.status(500).send({ message: error.message });
@@ -98,15 +99,6 @@ export const getAllPortfolio = async(req, res) => {
                 },
                 isDeleted: false
             },
-            // attributes: {
-            //     exclude: ['password'],
-            // },
-            // order: [
-            //   sortBy === 'branch.name' ?
-            //   [Branch, 'name', sortOrder.toUpperCase()]
-            //   :
-            //   [[sortBy, sortOrder.toUpperCase()]]
-            // ],
             limit: parseInt(limit),
             offset: parseInt(offset),
         });
