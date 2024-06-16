@@ -57,7 +57,7 @@ const BrowsePortfolio = () => {
                 <Card className="w-96">
                     <List>
                         {userData?.map((item, index) => (
-                            <ListItem key={index} onClick={() => handleClick(item.id)}>
+                            <ListItem key={index} onClick={() => handleClick(item.username)}>
                                 <ListItemPrefix>
                                     <Avatar variant="circular" alt="candice" src="https://docs.material-tailwind.com/img/face-1.jpg" />
                                 </ListItemPrefix>

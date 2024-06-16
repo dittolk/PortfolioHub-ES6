@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setDataUser } from "./redux/userSlice";
 import axios from "./api/axios";
+import ProfileMain from "./pages/profileMain";
 
 function App() {
 
@@ -21,12 +22,13 @@ function App() {
     { path: "/login-user", element: <LoginUser/> },
     { path: "/register-user", element: <RegisterUser/> },
     { path: "/browse", element: <BrowsePortfolio/> },
-    { path: "/p/:userId", element: <SeePortfolio/>},
+    { path: "/p/:username", element: <SeePortfolio/>},
     {
       element: <Required />,
       children: [
         { path: '/dashboard', element: <Dashboard/> },
         { path: '/create-portfolio', element: <CreatePortfolio/> },
+        { path: '/profile/:userId', element: <ProfileMain/> },
         { path: '/profile-settings', element: <ProfileSettings/> },
       ],
     },

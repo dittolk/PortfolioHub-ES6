@@ -36,7 +36,6 @@ export default function LoginUser() {
     });
 
     const response_process = (response) => {
-        console.log("ini response", response);
         if (response.data.token) {
             dispatch(setDataUser(response.data.result));
             localStorage.setItem("usertoken", response.data.token);

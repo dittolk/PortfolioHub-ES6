@@ -105,7 +105,7 @@ export const getAllUser = async (req, res) => {
   try {
     const { page, sortBy, sortOrder = 'asc', search = '' } = req.query;
 
-    const limit = 5;
+    const limit = 9;
     const offset = (page - 1) * limit;
 
     const dataUser = await User.findAndCountAll({
@@ -176,10 +176,10 @@ export const deleteUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   try {
-    const user_id = req.params.userId;
+    const user_id = req.params.username;
     const userData = await User.findOne({
       where: {
-        id: user_id,
+        username: user_id,
       },
       attributes: {
         exclude: ['password'],

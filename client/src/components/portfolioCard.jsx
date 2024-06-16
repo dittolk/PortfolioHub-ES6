@@ -6,16 +6,16 @@ import {
     Button,
 } from "@material-tailwind/react";
 
-export function PortfolioCard({ title, description }) {
+export function PortfolioCard({ title, description, cover }) {
     return (
-        <Card className="w-full max-w-[46rem] h-full max-h-[30rem] transition duration-300 transform hover:scale-105 flex-row cursor-pointer" onClick={() => {}}>
+        <Card className="w-full max-w-[46rem] h-full max-h-[14rem] transition duration-300 transform hover:scale-105 flex-row cursor-pointer" onClick={() => {}}>
             <CardHeader
                 shadow={false}
                 floated={false}
                 className="m-0 w-2/5 shrink-0 rounded-r-none"
             >
                 <img
-                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80"
+                    src={cover}
                     alt="card-image"
                     className="h-full w-full object-cover"
                 />

@@ -7,17 +7,17 @@ import { ProfileCard } from "../components/profileCard";
 
 export default function SeePortfolio() {
 
-    const [portfolioData, setPortfolioData] = useState();
+    const { username } = useParams();
 
-    const { userId } = useParams();
+    const [portfolioData, setPortfolioData] = useState();
     const [profile, setProfile] = useState([])
 
     const getPortfolios = async () => {
         try {
-            const response = await axios.get(`portfolios/${userId}/portfolios/?page=1`)
-            const response_profile = await axios.get(`users/${userId}`)
-            setPortfolioData(response.data.result.rows);
+            const response_profile = await axios.get(`users/${username}`)
             setProfile(response_profile.data.result)
+            const response_portfolio = await axios.get(`portfolios/${response_profile.data.result.id}/portfolios/?page=1`)
+            setPortfolioData(response_portfolio.data.result.rows);
         } catch (error) {
             console.log(error);
         }
@@ -38,6 +38,7 @@ export default function SeePortfolio() {
                             key={index}
                             title={item.title}
                             description={item.description}
+                            cover={item.mediaUrl}
                         />
                     ))}
                 </div>

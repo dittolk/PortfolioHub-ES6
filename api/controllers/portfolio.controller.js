@@ -1,17 +1,20 @@
 import { Op } from 'sequelize';
 import db from '../models/index.js';
 import moment from 'moment';
+import 'dotenv/config';
 
 const { User, Portfolio, Project } = db;
 
 export const createPortfolio = async (req, res) => {
     try {
         const { title, description, user_id } = req.body;
+        console.log(req.body);
 
         const findPortfolio = await Portfolio.findOne({
             where: {
                 title: title,
-                isDeleted: false
+                isDeleted: false,
+                UserId: user_id
             },
         });
 
@@ -22,6 +25,7 @@ export const createPortfolio = async (req, res) => {
         if (!findPortfolio) {
             await Portfolio.create({
                 ...req.body,
+                mediaUrl: `${process.env.BASE_URL_API}public/portfolios/${req.file?.filename}`,
                 UserId: user_id
             })
 

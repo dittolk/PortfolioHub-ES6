@@ -10,6 +10,6 @@ userRouter.post('/', rateLimit('global'), checkRegisterUser, createUser);
 userRouter.post('/login', rateLimit('login'), checkLoginUser, loginUser)
 userRouter.get('/keeplogin', rateLimit('authenticated'), verifyTokenUser, keepLoginUser)
 userRouter.get('/', rateLimit('global'), getAllUser)
-userRouter.get('/:userId', rateLimit('global'), getProfile)
+userRouter.get('/:username', rateLimit('global'), getProfile)
 
 export { userRouter };
