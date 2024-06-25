@@ -11,6 +11,7 @@ import {
     Typography,
 } from "@material-tailwind/react";
 import PortfolioSearchDisplay from '../components/portfolioSearchDisplay';
+import ppnull from '../assets/ppnull.jpg'
 
 const BrowsePortfolio = () => {
     const location = useLocation();
@@ -59,7 +60,7 @@ const BrowsePortfolio = () => {
                         {userData?.map((item, index) => (
                             <ListItem key={index} onClick={() => handleClick(item.username)}>
                                 <ListItemPrefix>
-                                    <Avatar variant="circular" alt="candice" src="https://docs.material-tailwind.com/img/face-1.jpg" />
+                                    <Avatar variant="circular" alt="candice" src={ppnull} />
                                 </ListItemPrefix>
                                 <div>
                                     <Typography variant="h6" color="blue-gray">

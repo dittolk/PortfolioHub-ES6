@@ -109,11 +109,6 @@ export const getAllUser = async (req, res) => {
     const offset = (page - 1) * limit;
 
     const dataUser = await User.findAndCountAll({
-      // include: [
-      //   {
-      //     model: Portfolio
-      //   }
-      // ],
       where: {
         name: {
           [Op.like]: `%${search}%`
@@ -122,12 +117,6 @@ export const getAllUser = async (req, res) => {
       attributes: {
         exclude: ['password'],
       },
-      // order: [
-      //   sortBy === 'branch.name' ?
-      //   [Branch, 'name', sortOrder.toUpperCase()]
-      //   :
-      //   [[sortBy, sortOrder.toUpperCase()]]
-      // ],
       limit: parseInt(limit),
       offset: parseInt(offset),
     });

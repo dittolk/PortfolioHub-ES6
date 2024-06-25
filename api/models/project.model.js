@@ -11,7 +11,8 @@ export default (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Project.belongsTo(models.User)
+      Project.belongsTo(models.Portfolio)
+      Project.hasMany(models.ProjectImage)
     }
   }
   Project.init({

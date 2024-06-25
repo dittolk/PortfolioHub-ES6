@@ -36,9 +36,11 @@ export default function SeePortfolio() {
                     {portfolioData?.map((item, index) => (
                         <PortfolioCard
                             key={index}
+                            id={item.id}
                             title={item.title}
                             description={item.description}
                             cover={item.mediaUrl}
+                            username={profile.username}
                         />
                     ))}
                 </div>

@@ -7,12 +7,13 @@ import {
     Tooltip,
     Button,
 } from "@material-tailwind/react";
+import ppnull from '../assets/ppnull.jpg'
 
 export function ProfileCard({ profile }) {
     return (
         <Card className="w-full md:max-w-[18rem]">
             <CardHeader floated={false} className="h-30">
-                <img src="https://docs.material-tailwind.com/img/team-3.jpg" alt="profile-picture" />
+                <img src={ppnull} alt="profile-picture" />
             </CardHeader>
             <CardBody className="text-center">
                 <div className="flex flex-col leading-relaxed gap-1">

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { verifyTokenUser } from '../middleware/user/user.auth.js';
-import { createPortfolio, deletePortfolio, getAllPortfolio, getUserPortfolio, updatePortfolio } from '../controllers/portfolio.controller.js';
+import { createPortfolio, deletePortfolio, getAllPortfolio, getPortfolio, getUserPortfolio, updatePortfolio } from '../controllers/portfolio.controller.js';
 import { rateLimit } from '../middleware/security/api.ratelimit.js';
 import { multerUploadPortfolio } from '../middleware/portfolios/portfolio.multer.js';
 
@@ -11,5 +11,6 @@ portfolioRouter.get('/:userId/portfolios', rateLimit('global'), getUserPortfolio
 portfolioRouter.get('/', rateLimit('global'), getAllPortfolio)
 portfolioRouter.patch('/delete/:id', rateLimit('global'), verifyTokenUser, deletePortfolio)
 portfolioRouter.patch('/:id', rateLimit('global'), verifyTokenUser, updatePortfolio)
+portfolioRouter.get('/:portfolioId', getPortfolio )
 
 export { portfolioRouter };

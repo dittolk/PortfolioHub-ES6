@@ -1,17 +1,34 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png'
 
-export default function PortfolioSearchDisplay({portfolioData}) {
+export default function PortfolioSearchDisplay({ portfolioData }) {
+    const navigate = useNavigate();
+
+    const handleClick = (id) => {
+        navigate(`/p/${id}`);
+    }
+
+    const handleClickTitle = (username, id) => {
+        navigate(`/p/${username}/${id}`);
+    }
+
     return (
         <div className='flex flex-col w-full max-w-[72rem] p-3 border-t rounded-xl shadow-md border-gray-200 bg-white justify-between'>
             <div className='flex flex-col'>
                 {portfolioData?.rows?.map((item, index) => (
                     <div key={index} className='flex flex-col text-start p-3'>
-                        <p className='leading-relaxed font-bold text-gray-700 text-[15px] md:text-[18px] line-clamp-1'>{item?.title}</p>
-                        <div className='flex flex-row gap-2'>
-                        <p className='leading-relaxed text-indigo-600 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-1'>{item?.User?.name}</p>
-                        <p className='leading-relaxed text-gray-700 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-1'>{item?.User?.email}</p>
+                        <div className='flex flex-row gap-4 items-center'>
+                            <img src={item.mediaUrl ? item.mediaUrl : logo} className="h-[80px] w-[80px] object-cover rounded-lg"></img>
+                            <div>
+                                <p onClick={() => {handleClickTitle(item?.User?.username, item.id)}} className='leading-relaxed font-bold text-gray-700 text-[15px] md:text-[18px] line-clamp-1 cursor-pointer'>{item?.title}</p>
+                                <div className='flex flex-row gap-2'>
+                                    <p onClick={() => handleClick(item?.User?.username)} className='leading-relaxed text-indigo-600 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-1 cursor-pointer'>{item?.User?.name}</p>
+                                    <p onClick={() => handleClick(item?.User?.username)} className='leading-relaxed text-gray-700 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-1 cursor-pointer'>{item?.User?.email}</p>
+                                </div>
+                                <p className='leading-relaxed text-gray-700 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-2'>{item?.description}</p>
+                            </div>
                         </div>
-                        <p className='leading-relaxed text-gray-700 text-[14px] md:text-[16px] line-clamp-4 md:line-clamp-2'>{item?.description}</p>
                     </div>
                 ))}
             </div>

@@ -13,7 +13,6 @@ export default function CreatePortfolio() {
     const [isLoading, setIsLoading] = useState(false);
     const user = useSelector((state) => state.user.value);
     const token = localStorage.getItem('usertoken')
-    console.log("LOGGED USER ID", user.id);
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -21,12 +20,6 @@ export default function CreatePortfolio() {
 
     const handleSubmit = async (data) => {
         try {
-            for (var p of data) {
-                let name = p[0];
-                let value = p[1];
-            
-                console.log(name, value)
-            }
             setIsLoading(true)
             const response = await axios.post("portfolios/", data, {
                 headers: {
@@ -154,7 +147,7 @@ export default function CreatePortfolio() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-6 flex items-center justify-end gap-x-6">
+                <div className="sticky bottom-0 bg-white py-4 flex items-center justify-end gap-x-6 border-t border-gray-200">
                     <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
                     </button>

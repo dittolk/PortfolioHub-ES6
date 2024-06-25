@@ -4,7 +4,7 @@ import moment from 'moment';
 import 'dotenv/config';
 import redisClient from '../config/redis.config.js';
 
-const { User, Portfolio, Project } = db;
+const { User, Portfolio, Project, ProjectImage } = db;
 
 export const createPortfolio = async (req, res) => {
     try {
@@ -53,11 +53,11 @@ export const getUserPortfolio = async (req, res) => {
         }
 
         const dataPortfolio = await Portfolio.findAndCountAll({
-            include: [
-              {
-                model: Project
-              }
-            ],
+            // include: [
+            //   {
+            //     model: Project
+            //   }
+            // ],
             where: {
                 UserId: user_id,
                 title: {
@@ -80,6 +80,43 @@ export const getUserPortfolio = async (req, res) => {
     }
 }
 
+export const getPortfolio = async(req, res) => {
+    try{
+        const portfolio_id = req.params.portfolioId;
+
+        const dataPortfolio = await Portfolio.findOne({
+            include: [
+              {
+                model: Project,
+                include: [
+                    {
+                        model: ProjectImage
+                    }
+                ]
+              },
+              {
+                model: User,
+                attributes: {
+                    exclude: ['password'],
+                  },
+              }
+            ],
+            where:{
+                id: portfolio_id
+            }
+        })
+
+        if(!dataPortfolio){
+            return res.status(404).send({ message: 'Portfolio not found' });
+        }
+
+        return res.status(200).send({ result: dataPortfolio });
+    }catch(error){
+        console.error(error)
+        return res.status(500).send({ message: error.message });
+    }
+}
+
 export const getAllPortfolio = async(req, res) => {
     try{
         const { page, sortBy, sortOrder = 'asc', search = '' } = req.query;
@@ -94,11 +131,31 @@ export const getAllPortfolio = async(req, res) => {
               }
             ],
             where: {
-                title: {
-                    [Op.like]: `%${search}%`
-                },
-                isDeleted: false
-            },
+                [Op.and]: [
+                  {
+                    isDeleted: false
+                  },
+                  {
+                    [Op.or]: [
+                      {
+                        title: {
+                          [Op.like]: `%${search}%`
+                        }
+                      },
+                      {
+                        '$User.name$': {
+                          [Op.like]: `%${search}%`
+                        }
+                      },
+                      {
+                        '$User.email$': {
+                          [Op.like]: `%${search}%`
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
             limit: parseInt(limit),
             offset: parseInt(offset),
         });

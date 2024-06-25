@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setDataUser } from "./redux/userSlice";
 import axios from "./api/axios";
 import ProfileMain from "./pages/profileMain";
+import PortfolioDetail from "./pages/portfolioDetail";
 
 function App() {
 
@@ -23,6 +24,8 @@ function App() {
     { path: "/register-user", element: <RegisterUser/> },
     { path: "/browse", element: <BrowsePortfolio/> },
     { path: "/p/:username", element: <SeePortfolio/>},
+    { path: "/p/:username/:portfolioId", element: <PortfolioDetail/>},
+    
     {
       element: <Required />,
       children: [
@@ -30,6 +33,7 @@ function App() {
         { path: '/create-portfolio', element: <CreatePortfolio/> },
         { path: '/profile/:userId', element: <ProfileMain/> },
         { path: '/profile-settings', element: <ProfileSettings/> },
+
       ],
     },
   ]);

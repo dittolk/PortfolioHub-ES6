@@ -5,10 +5,16 @@ import {
     Typography,
     Button,
 } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
-export function PortfolioCard({ title, description, cover }) {
+export function PortfolioCard({id, title, description, cover, username }) {
+  const navigate = useNavigate();
+
+    const handleClick = (username, id) => {
+        navigate(`/p/${username}/${id}`);
+    }
     return (
-        <Card className="w-full max-w-[46rem] h-full max-h-[14rem] transition duration-300 transform hover:scale-105 flex-row cursor-pointer" onClick={() => {}}>
+        <Card className="w-full max-w-[46rem] h-full max-h-[14rem] transition duration-300 transform hover:scale-105 flex-row cursor-pointer" onClick={() => {handleClick(username, id)}}>
             <CardHeader
                 shadow={false}
                 floated={false}
