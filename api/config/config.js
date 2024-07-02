@@ -1,5 +1,6 @@
 ////////////////////ES6
 import 'dotenv/config';
+import mysql2 from 'mysql2';
 
 const config = {
     development: {
@@ -24,6 +25,16 @@ const config = {
         dialect: process.env.PROD_DB_DIALECT
     }
 };
+
+// const connection = mysql2.createConnection(config);
+
+// connection.connect((err) => {
+//   if (err) {
+//     console.error('Error connecting to MySQL:', err.stack);
+//     return;
+//   }
+//   console.log('Connected to MySQL as id', connection.threadId);
+// });
 
 export default config;
 

@@ -24,10 +24,6 @@ function NavList() {
     }
   };
 
-  const handleClick = () => {
-    
-  }
-
   const handleLogout = () => {
     localStorage.removeItem('usertoken');
     window.location.reload();
@@ -57,7 +53,7 @@ function NavList() {
           />
         </div>
       </div>
-      <Button variant="outlined" size="sm" color="blue-gray" onClick={() => navigate('/create-portfolio')}>
+      <Button variant="outlined" size="sm" onClick={() => navigate('/create-portfolio')}>
         Create Portfolio
       </Button>
       <Typography

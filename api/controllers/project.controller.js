@@ -1,21 +1,15 @@
 import { Op } from 'sequelize';
 import db from '../models/index.js';
 import moment from 'moment';
+import sanitize from '../utils/sanitize.js';
 
 const { Portfolio, Project, ProjectImage } = db;
 
 export const createProject = async (req, res) => {
     try {
         const portfolio_id = req.params.portfolioId
-        const { title, description } = req.body;
+        const { title, description, position } = req.body;
         const photos = req.files
-
-        console.log("File", photos);
-        console.log("Body", req.body);
-
-        if(!photos){
-            return res.status(404).json({ error: 'Please upload at least 1 photo' });
-        }
 
         const portfolio = await Portfolio.findOne({ where: { id: portfolio_id, UserId: req.user.id } });
         if (!portfolio) {
@@ -35,14 +29,16 @@ export const createProject = async (req, res) => {
         const result = await Project.create({
             ...req.body,
             PortfolioId: portfolio_id,
-            UserId: req.user.id
+            UserId: req.user.id,
         })
 
-        for (const file of photos) {
-            await ProjectImage.create({
-                mediaUrl: `${process.env.BASE_URL_API}public/portfolios/projects/${file.filename}`,
-                ProjectId: result.id
-            });
+        if(photos){
+            for (const file of photos) {
+                await ProjectImage.create({
+                    mediaUrl: `${process.env.BASE_URL_API}public/portfolios/${sanitize(req.user.username)}/${sanitize(req.body.portfolioTitle)}/${sanitize(req.body.title)}/${file.filename}`,
+                    ProjectId: result.id
+                });
+            }
         }
 
         return res.status(201).send({ message: "Your Project has been created" })
@@ -136,7 +132,7 @@ export const deleteProject = async (req, res) => {
 export const getAllProjectOfPortfolio = async (req, res) => {
     try {
         const portfolio_id = req.params.portfolioId
-        const { page, sortBy, sortOrder = 'asc', search = '' } = req.query;
+        const { page, sortBy = 'position', sortOrder = 'asc', search = '' } = req.query;
 
         const limit = 5;
         const offset = (page - 1) * limit;
@@ -147,11 +143,6 @@ export const getAllProjectOfPortfolio = async (req, res) => {
         }
 
         const dataProject = await Project.findAndCountAll({
-            // include: [
-            //   {
-            //     model: Project
-            //   }
-            // ],
             where: {
                 PortfolioId: portfolio_id,
                 title: {
@@ -159,15 +150,7 @@ export const getAllProjectOfPortfolio = async (req, res) => {
                 },
                 isDeleted: false
             },
-            // attributes: {
-            //     exclude: ['password'],
-            // },
-            // order: [
-            //   sortBy === 'branch.name' ?
-            //   [Branch, 'name', sortOrder.toUpperCase()]
-            //   :
-            //   [[sortBy, sortOrder.toUpperCase()]]
-            // ],
+            order:[[sortBy, sortOrder.toUpperCase()]],
             limit: parseInt(limit),
             offset: parseInt(offset),
         });

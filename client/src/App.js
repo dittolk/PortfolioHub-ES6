@@ -48,7 +48,7 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       });
-      dispatch(setDataUser(response.data.result));
+      dispatch(setDataUser(response?.data?.result));
     } catch (err) {
       toast.error(err.response.data.message, {
         position: "top-center",

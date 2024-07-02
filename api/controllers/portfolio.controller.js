@@ -3,6 +3,7 @@ import db from '../models/index.js';
 import moment from 'moment';
 import 'dotenv/config';
 import redisClient from '../config/redis.config.js';
+import sanitize from '../utils/sanitize.js';
 
 const { User, Portfolio, Project, ProjectImage } = db;
 
@@ -23,13 +24,13 @@ export const createPortfolio = async (req, res) => {
         }
 
         if (!findPortfolio) {
-            await Portfolio.create({
+            const response = await Portfolio.create({
                 ...req.body,
-                mediaUrl: `${process.env.BASE_URL_API}public/portfolios/${req.file?.filename}`,
+                mediaUrl: `${process.env.BASE_URL_API}public/portfolios/${sanitize(req.user.username)}/${sanitize(req.body.title)}/${req.file?.filename}`,
                 UserId: user_id
-            })
+            });
 
-            return res.status(200).send({ message: "Your portfolio has been created" })
+            return res.status(200).send({result: response, message: "Your portfolio has been created" })
         }
     } catch (error) {
         console.error(error);
@@ -40,7 +41,7 @@ export const createPortfolio = async (req, res) => {
 export const getUserPortfolio = async (req, res) => {
     try {
         const user_id = req.params.userId
-        const { page, sortBy, sortOrder = 'asc', search = '' } = req.query;
+        const { page, sortBy = 'createdAt', sortOrder = 'desc', search = '' } = req.query;
 
         const limit = 6;
         const offset = (page - 1) * limit;
@@ -65,6 +66,7 @@ export const getUserPortfolio = async (req, res) => {
                 },
                 isDeleted: false
             },
+            order:[[sortBy, sortOrder.toUpperCase()]],
             limit: parseInt(limit),
             offset: parseInt(offset),
         });
@@ -101,6 +103,7 @@ export const getPortfolio = async(req, res) => {
                   },
               }
             ],
+            order: [[Project, 'position', 'ASC']],
             where:{
                 id: portfolio_id
             }

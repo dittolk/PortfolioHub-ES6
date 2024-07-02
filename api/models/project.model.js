@@ -25,6 +25,7 @@ export default (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     mediaUrl: DataTypes.STRING,
+    position: DataTypes.INTEGER,
     isDeleted: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

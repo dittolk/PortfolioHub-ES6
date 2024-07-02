@@ -63,6 +63,7 @@ export const loginUser = async (req, res) => {
 
     let payload = {
       id: dataLoginUser.id,
+      username: dataLoginUser.username
     };
     const expiresIn = req.query.rememberme === 'true' ? undefined : '24h';
     const token = jwt.sign(payload, process.env.KEY_JWT, { expiresIn });
